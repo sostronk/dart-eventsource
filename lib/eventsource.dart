@@ -131,6 +131,11 @@ class EventSource extends Stream<Event> {
   void _updateRetryDelay(Duration retry) {
     _retryDelay = retry;
   }
+
+  Future close() async {
+    await _streamController.close();
+    client.close();
+  }
 }
 
 /// Returns the encoding to use for a response with the given headers. This
