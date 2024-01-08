@@ -2,6 +2,7 @@ library eventsource.src.decoder;
 
 import "dart:async";
 import "dart:convert";
+import "dart:math";
 import "event.dart";
 
 typedef RetryIndicator = void Function(Duration retry);
@@ -57,6 +58,12 @@ class EventSourceDecoder implements StreamTransformer<List<int>, Event> {
               retryIndicator?.call(new Duration(milliseconds: int.parse(value)));
               break;
           }
+        },
+        onDone: () {
+          controller.close();
+        },
+        onError: (e, s) {
+          controller.addError(e, s);
         },
       );
     });
