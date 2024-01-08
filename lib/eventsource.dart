@@ -113,6 +113,8 @@ class EventSource extends Stream<Event> {
 
   /// Retries until a new connection is established. Uses exponential backoff.
   Future _retry(dynamic e) async {
+    if (_streamController.isClosed) return;
+
     _readyState = EventSourceReadyState.CONNECTING;
     // try reopening with exponential backoff
     Duration backoff = _retryDelay;
